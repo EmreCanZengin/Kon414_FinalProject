@@ -1,0 +1,10 @@
+/devel/
+/build/
+/src/cpr_gazebo/
+/src/DynamixelSDK/
+/src/ira_laser_tools/
+/src/turtlebot3/
+/src/turtlebot3_msgs/
+/src/turtlebot3_simulations/
+*.bag
+frames.*

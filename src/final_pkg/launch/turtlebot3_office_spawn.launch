@@ -1,0 +1,28 @@
+<launch>
+  <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
+
+  <arg name="x_pos" default="0.0"/>
+  <arg name="y_pos" default="1.0"/>
+  <arg name="z_pos" default="0.2"/>
+
+  <include file="$(find final_pkg)/launch/turtlebot3_office_world.launch"/>
+  
+  <include file="$(find final_pkg)/launch/turtlebot3_gazebo_rviz.launch"/>
+
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find final_pkg)/urdf/turtlebot3_$(arg model).urdf.xacro" />
+
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model turtlebot3 -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
+
+  <node pkg="ira_laser_tools" name="laserscan_multi_merger" type="laserscan_multi_merger" output="screen">
+      <param name="destination_frame" value="base_link"/> <!-- wrt base link-->
+      <param name="cloud_destination_topic" value="/merged_cloud"/>
+      <param name="scan_destination_topic" value="/scan"/>
+      <param name="laserscan_topics" value ="/front_scan /rear_scan" /> <!-- LIST OF THE LASER SCAN TOPICS TO SUBSCRIBE -->
+      <param name="angle_min" value="-3.1416"/>
+      <param name="angle_max" value="3.1416"/>
+      <param name="range_min" value="0.3"/>
+      <param name="range_max" value="20.1"/>
+      <param name="range_resolution" value="1"/>
+      <param name="angle_increment" value="0.005"/>
+  </node>
+</launch>
